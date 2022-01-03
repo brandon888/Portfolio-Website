@@ -1,11 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
 import MatterWorld from './MatterWorld';
+// import useWindowDimensions from './useWindowDimensions';
 
 function App() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
   return (
     <div className="App">
-      <MatterWorld />
+      <MatterWorld 
+        width={width}
+        height={height}
+      />
     </div>
   );
 }
