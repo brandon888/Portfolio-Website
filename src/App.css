@@ -1,6 +1,7 @@
 .App {
+  position: relative;
   text-align: center;
-  height: 100%;
+  height: 100vh;
   width: 100vw;
   overflow: hidden;
 }
@@ -10,32 +11,28 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.MatterWorld {
+  outline: none !important;
+  overflow: hidden;
+  position: absolute;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#overlay {
+  position: absolute;
 }
 
-.App-link {
-  color: #61dafb;
+.fade-in {
+  position:absolute;
+  transition: opacity 1s ease;
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.fade-out {
+  position:absolute;
+  opacity: 0;
+  transition: opacity 1s ease;
 }
