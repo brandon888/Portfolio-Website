@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Profiler } from 'react';
+import pp from './Assets/linkedin_profile.png';
 
-const Fade = ({ text, onChange }) => {
+const Fade = ({ text, onChange, screen }) => {
     const [fade, setFade] = useState({
         fade: 'fade-out',
     });
@@ -9,10 +10,20 @@ const Fade = ({ text, onChange }) => {
         onChange(setFade);
     }, [])
 
+    const divStyle = {
+        width: screen.w * 0.2
+    };
+
     return (
-        <div>
+        <div
+        className={fade.fade}
+        style={divStyle}
+        >
+            <img
+                src={pp}
+            ></img>
             <h1
-                className={fade.fade}
+                className='Profile-text'
             >{text}</h1>
         </div>
     )

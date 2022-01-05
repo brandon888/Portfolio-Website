@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;600&display=swap');
+
 .App {
   position: relative;
   text-align: center;
@@ -5,6 +7,18 @@
   width: 100vw;
   overflow: hidden;
 }
+
+img {
+  margin-top: 10%;
+  width: 50%;
+  height: auto;
+}
+
+.Profile-text {
+  font-size: 50px;
+  font-family: 'Open Sans', sans-serif;
+}
+
 
 .App-logo {
   height: 40vmin;

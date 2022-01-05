@@ -26,16 +26,9 @@ const SecondFloor = (screen) => {
         isStatic: true,
     });
 
-    var leftBound = Bodies.rectangle(-20, screen.h / 2, 20, screen.h, {
-        isStatic: true,
-    });
-
-    var rightBound = Bodies.rectangle(screen.w + 20, screen.h / 2, 20, screen.h, {
-        isStatic: true,
-    });
 
     Composite.add(floorOneComposite,
-        [groundRight, leftBound, rightBound, bLetter, rLetter, aLetter, nLetter, dLetter, nLetter2, groundLeft]
+        [groundRight, bLetter, rLetter, aLetter, nLetter, dLetter, nLetter2, groundLeft]
     )
 
     return floorOneComposite;

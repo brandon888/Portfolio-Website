@@ -16,6 +16,11 @@ const MatterWorld = (props) => {
         setTextFade = setFade;
     };
 
+    const screen = {
+        w: props.width,
+        h: props.height,
+    }
+
     useEffect(() => {
         var mainDone = false;
         var level = 1;
@@ -23,11 +28,6 @@ const MatterWorld = (props) => {
         var projectsActive = false;
 
         matter.current.focus();
-        
-        const screen = {
-            w: props.width,
-            h: props.height,
-        }
 
         var engine = Engine.create();
 
@@ -56,12 +56,22 @@ const MatterWorld = (props) => {
             density: 0.02,
         });
 
+        var leftBound = Bodies.rectangle(-5, screen.h * 1.5, 5, screen.h * 3, {
+            isStatic: true,
+            render: { isVisible: false, }
+        });
+    
+        var rightBound = Bodies.rectangle(screen.w + 5, screen.h * 1.5, 5, screen.h * 3, {
+            isStatic: true,
+            render: { isVisible: false, }
+        });
+
         var floorOneComposite = FirstFloor(screen);
         var floorTwoComposite = SecondFloor(screen);
         var projectComposite = ProjectScene(screen);
 
         Composite.add(engine.world,
-            [oLetter, floorOneComposite, floorTwoComposite]
+            [oLetter, floorOneComposite, floorTwoComposite, leftBound, rightBound]
         );
         
 
@@ -115,6 +125,10 @@ const MatterWorld = (props) => {
                             y: -5,
                         });
                     }
+                } else {
+                    setTextFade({
+                        fade: 'fade-in',
+                    })
                 }
                 if (oLetter.position.x > projectsBlock.position.x - 150 * Math.cos(projectsBlock.angle) && oLetter.position.x < projectsBlock.position.x + 150 * Math.cos(projectsBlock.angle)
                     && oLetter.position.y < projectsBlock.position.y) {
@@ -132,6 +146,7 @@ const MatterWorld = (props) => {
                 }
                 if (level === 3) {
                     Composite.remove([floorTwoComposite]);
+
                 }
             }
             
@@ -157,7 +172,11 @@ const MatterWorld = (props) => {
             onKeyDown={handleDown}
             tabIndex={0}
         >
-        <Fade onChange={makeTextFade} text={"Hi, I'm brandon"}/>
+        <Fade
+            onChange={makeTextFade}
+            screen={screen}
+            text={"Hi, I'm Brandon"}
+        />
         </div>
     )
 }
