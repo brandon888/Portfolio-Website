@@ -1,16 +1,18 @@
 import { Composite, Bodies } from 'matter-js'
 
 const SecondFloor = (screen) => {
-    var floorTwoComposite = Composite.create();
+  var floorTwoComposite = Composite.create();
 
-    var secondGround = Bodies.rectangle(screen.w / 2, 2 * screen.h, screen.w, 200, {
-        isStatic: true,
-        collisionFilter: { group: -1 },
-    });
+  var secondGround = Bodies.rectangle(screen.w / 2, 2 * screen.h, screen.w, 200, {
+    isStatic: true,
+    collisionFilter: {
+      group: -1
+    }
+  });
 
-    Composite.add(floorTwoComposite, secondGround);
+  Composite.add(floorTwoComposite, secondGround);
 
-    return floorTwoComposite;
+  return floorTwoComposite;
 }
 
 export default SecondFloor;
