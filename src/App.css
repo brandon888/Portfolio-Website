@@ -8,17 +8,37 @@
   overflow: hidden;
 }
 
-img {
-  margin-top: 10%;
-  width: 50%;
+.fade-in img {
+  margin-top: 10vh;
+  width: 10vw;
+  margin-left: 10vw;
+  height: auto;
+}
+
+.fade-out img {
+  margin-top: 10vh;
+  width: 10vw;
+  margin-left: 10vw;
   height: auto;
 }
 
 .Profile-text {
-  font-size: 50px;
+  font-size: 4vw;
+  max-width: 60%;
+  margin-left: 26%;
+  margin-top: 3%;
+  text-align: left;
   font-family: 'Open Sans', sans-serif;
 }
 
+.Profile-text-two {
+  font-size: 3vw;
+  max-width: 60%;
+  margin-left: 26%;
+  margin-top: 3%;
+  text-align: left;
+  font-family: 'Open Sans', sans-serif;
+}
 
 .App-logo {
   height: 40vmin;
@@ -38,7 +58,7 @@ img {
 .fade-in {
   position:absolute;
   transition: opacity 1s ease;
-  -webkit-user-select: none; /* Safari */        
+  -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */

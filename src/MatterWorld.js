@@ -243,6 +243,7 @@ const MatterWorld = (props) => {
   return (
     <div ref={matter} onKeyDown={handleDown} tabIndex={0}>
       <Fade onChange={makeTextFade} screen={screen} text={"Hi, I'm Brandon"}/>
+
     </div>
   )
 }

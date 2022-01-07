@@ -8,15 +8,16 @@ const Fade = ({text, onChange, screen}) => {
     onChange(setFade);
   }, [])
 
-  const divStyle = {
-    width: screen.w * 0.2
-  };
-
   return (
-    <div className={fade.fade} style={divStyle}>
-      <img src={pp}></img>
-      <h1 className='Profile-text'>{text}</h1>
-    </div>
+    <>
+      <div className={fade.fade}>
+        <img src={pp} />
+      </div>
+      <div className={fade.fade}>
+        <h1 className='Profile-text'>{text}</h1>
+        <h1 className='Profile-text-two'>{"Software Developer and Full-time student at the Georgia Institute of Technology"}</h1>
+      </div>
+    </>
   )
 }
 
