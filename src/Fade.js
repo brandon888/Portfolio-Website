@@ -1,4 +1,4 @@
-import {useState, useEffect, Profiler} from 'react';
+import {useState, useEffect} from 'react';
 import pp from './Assets/linkedin_profile.png';
 
 const Fade = ({text, onChange, screen}) => {
