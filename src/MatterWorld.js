@@ -12,7 +12,7 @@ import React, {useEffect, useState} from 'react';
 import SecondFloor from './Scenes/SecondFloor';
 import FirstFloor from './Scenes/FirstFloor';
 import ProjectScene from './Scenes/ProjectScene'
-import Fade from './Fade';
+import Fade from './Fade'
 import './App.css';
 
 const MatterWorld = (props) => {
@@ -20,6 +20,12 @@ const MatterWorld = (props) => {
   let oLetter;
   let setTextFade;
   let projectsBlock;
+  let leftGround;
+  let rightGround;
+  let handleRemoveConstraint;
+  let oDetached = false;
+  let handleDrop;
+  let drop = false;
 
   const makeTextFade = (setFade) => {
     setTextFade = setFade;
@@ -30,6 +36,9 @@ const MatterWorld = (props) => {
     h: props.height
   }
 
+  console.log(screen.w);
+  console.log(screen.h);
+
   useEffect(() => {
     var mainDone = false;
     var level = 1;
@@ -39,6 +48,7 @@ const MatterWorld = (props) => {
     matter.current.focus();
 
     var engine = Engine.create();
+    engine.world.gravity.y = screen.h / 804;
 
     var render = Render.create({
       element: matter.current,
@@ -52,12 +62,15 @@ const MatterWorld = (props) => {
       }
     });
 
-    oLetter = Bodies.circle(1500, 90, 50, {
+    oLetter = Bodies.circle(screen.w * 0.7, -screen.h / 10, 50, {
       render: {
         opacity: 0.5
       },
-      density: 0.01
+      density: 0.01,
+      collisionFilter: { group: -2 },
     });
+
+    Body.scale(oLetter, screen.w / 1920, screen.w / 1920);
 
     projectsBlock = Bodies.rectangle(screen.w / 3, 2 * screen.h - 50, 300, 100, {
       render: {
@@ -72,52 +85,68 @@ const MatterWorld = (props) => {
       density: 0.02
     });
 
-    var leftBound = Bodies.rectangle(-5, screen.h * 1.5, 5, screen.h * 3, {
+    var leftBound = Bodies.rectangle(-5, screen.h * 1.5, 20, screen.h * 3, {
       isStatic: true,
       render: {
-        isVisible: false
-      }
+        visible: false
+      },
+      collisionFilter: { group: -3 }
     });
 
-    var rightBound = Bodies.rectangle(screen.w + 5, screen.h * 1.5, 5, screen.h * 3, {
+    var rightBound = Bodies.rectangle(screen.w + 5, screen.h * 1.5, 20, screen.h * 3, {
       isStatic: true,
       render: {
-        isVisible: false
-      }
+        visible: false
+      },
+      collisionFilter: { group: -3 }
     });
 
-    var floorOneComposite = FirstFloor(screen);
+    var firstFloor = FirstFloor(screen);
+    var floorOneComposite = firstFloor.floorOneComposite;
+    leftGround = firstFloor.leftGround;
+    rightGround = firstFloor.rightGround;
+    var bigO = firstFloor.bigO;
     var floorTwoComposite = SecondFloor(screen);
     var projectComposite = ProjectScene(screen);
 
-    Composite.add(engine.world, [oLetter, floorOneComposite, floorTwoComposite, leftBound, rightBound]);
+    var oConstraint = Matter.Constraint.create({
+      bodyA: bigO,
+      bodyB: oLetter,
+      render: { visible: false }
+    });
 
-    Render.run(render);
+
+    Composite.add(engine.world, [oConstraint, oLetter, floorOneComposite, floorTwoComposite, leftBound, rightBound]);
 
     Composite.add(engine.world, [projectsBlock]);
 
-    var testing = Bodies.rectangle(screen.w / 2, 0, 200, 20, {isStatic: true});
-
-    Composite.add(engine.world, [testing]);
+    handleRemoveConstraint = (right) => {
+      Composite.remove(engine.world, oConstraint);
+      const xForce = right ? 2 * screen.w / 1920 : -2 * screen.w / 1920;
+      Body.setVelocity(oLetter, { x: xForce, y: -Math.abs(xForce) * 6 });
+    }
 
     Events.on(engine, "beforeUpdate", () => {
       matter.current.focus();
-      if (oLetter.position.y > screen.h * 0.8 && level === 1) {
+      if (level === 1 && drop) {
         if (Bounds.contains(render.bounds, {
           x: 10,
           y: screen.h
         })) {
           Bounds.translate(render.bounds, {
             x: 0,
-            y: oLetter.velocity.y
+            y: screen.h * 0.01,
           });
         } else if (level === 1) {
           level = 2;
-          Composite.remove(engine.world, [floorOneComposite]);
+          //Composite.remove(engine.world, [floorOneComposite]);
           setTextFade({fade: 'fade-in'})
         }
       }
       if (level === 2) {
+        if (leftGround.angle > 1.65) {
+          Composite.remove(floorOneComposite, [leftGround, rightGround]);
+        }
         if (oLetter.position.y < screen.h * 1.5) {
           Composite.add(engine.world, [projectComposite]);
         }
@@ -164,29 +193,50 @@ const MatterWorld = (props) => {
         }
         if (level === 3) {
           Composite.remove([floorTwoComposite]);
-
         }
       }
 
     });
 
     var runner = Runner.create();
-
+    Render.run(render);
     Runner.run(runner, engine);
 
   }, []);
 
   const handleDown = (e) => {
     if (e.key === 'ArrowRight') {
+      if (!oDetached) {
+        if (oLetter.position.y < screen.h * 0.4) {
+          return;
+        }
+        oDetached = true;
+        handleRemoveConstraint(true);
+      }
       Body.setVelocity(oLetter, {
-        x: 10,
+        x: screen.w / 1920 * 10,
         y: oLetter.velocity.y
       })
     } else if (e.key === 'ArrowLeft') {
+      if (!oDetached) {
+        if (oLetter.position.y < screen.h * 0.4) {
+          return;
+        }
+        oDetached = true;
+        handleRemoveConstraint(false);
+      }
       Body.setVelocity(oLetter, {
-        x: -10,
+        x: -screen.w / 1920 * 10,
         y: oLetter.velocity.y
       })
+    } else if (e.key === 'ArrowDown') {
+      if (oDetached) {
+        Body.setStatic(leftGround, false);
+        Body.setStatic(rightGround, false);
+        if (!drop) {
+          drop = true;
+        }
+      }
     }
   }
 

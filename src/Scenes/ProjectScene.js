@@ -8,7 +8,7 @@ const ProjectScene = (screen) => {
   var projectGround = Bodies.rectangle(screen.w * 0.8, screen.h * 0.9, screen.w / 2, 200, {
     isStatic: true,
     collisionFilter: {
-      group: -1
+      group: -3
     }
   });
 

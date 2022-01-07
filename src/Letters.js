@@ -1,6 +1,6 @@
 import Matter, { Body } from 'matter-js';
 
-const Letters = (param) => {
+const Letters = (screen) => {
     var Bodies = Matter.Bodies;
 
     const bTopPos = { x: 500, y: 50 };
@@ -41,7 +41,7 @@ const Letters = (param) => {
     });
 
 // ----------------------------------------------------------------------------------------
-    
+
     // R
     var rOuterTop = Bodies.rectangle(560, 50, 100, 85, {
         chamfer: { radius: [0, 40, 40, 0] },
@@ -188,8 +188,31 @@ const Letters = (param) => {
         parts: [nLeftLine2, nRightLine2, nBigTriangle2, nSmallTriangle2],
     })
 
+// ----------------------------------------------------------------
 
+    // Big O
+    var bigO = Bodies.circle(1500, 90, 85, {
+      render: {
+        opacity: 0.5
+      },
+      collisionFilter: { group: -2 },
+    })
 
+    Body.scale(bLetter, screen.w / 1920, screen.w / 1920);
+    Body.scale(rLetter, screen.w / 1920, screen.w / 1920);
+    Body.scale(aLetter, screen.w / 1920, screen.w / 1920);
+    Body.scale(nLetter, screen.w / 1920, screen.w / 1920);
+    Body.scale(dLetter, screen.w / 1920, screen.w / 1920);
+    Body.scale(bigO, screen.w / 1920, screen.w / 1920);
+    Body.scale(nLetter2, screen.w / 1920, screen.w / 1920);
+
+    Body.setPosition(bLetter, { x: screen.w * 0.2, y: -screen.h / 10 });
+    Body.setPosition(rLetter, { x: screen.w * 0.3, y: -screen.h / 10 });
+    Body.setPosition(aLetter, { x: screen.w * 0.4, y: -screen.h / 10 });
+    Body.setPosition(nLetter, { x: screen.w * 0.5, y: -screen.h / 10 });
+    Body.setPosition(dLetter, { x: screen.w * 0.6, y: -screen.h / 10 });
+    Body.setPosition(bigO, { x: screen.w * 0.7, y: -screen.h / 10 });
+    Body.setPosition(nLetter2, { x: screen.w * 0.8, y: -screen.h / 10 });
 
     return ({
         bLetter: bLetter,
@@ -198,6 +221,7 @@ const Letters = (param) => {
         nLetter: nLetter,
         dLetter: dLetter,
         nLetter2: nLetter2,
+        bigO: bigO,
     })
 }
 
