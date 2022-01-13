@@ -5,7 +5,7 @@ import { Composite, Bodies } from 'matter-js'
 const ProjectScene = (screen) => {
   var projectComposite = Composite.create();
 
-  var projectGround = Bodies.rectangle(screen.w * 0.8, screen.h * 0.9, screen.w / 2, 200, {
+  var projectGround = Bodies.rectangle(screen.w * 0.8, screen.h * 0.9, screen.w / 2, screen.h / 4, {
     isStatic: true,
     collisionFilter: {
       group: -3

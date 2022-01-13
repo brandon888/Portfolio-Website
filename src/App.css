@@ -8,41 +8,11 @@
   overflow: hidden;
 }
 
-.fade-in img {
-  margin-top: 10vh;
-  width: 10vw;
-  margin-left: 10vw;
-  height: auto;
-}
-
-.fade-out img {
-  margin-top: 10vh;
-  width: 10vw;
-  margin-left: 10vw;
-  height: auto;
-}
-
-.Profile-text {
-  font-size: 4vw;
-  max-width: 60%;
-  margin-left: 26%;
-  margin-top: 3%;
-  text-align: left;
-  font-family: 'Open Sans', sans-serif;
-}
-
-.Profile-text-two {
-  font-size: 3vw;
-  max-width: 60%;
-  margin-left: 26%;
-  margin-top: 3%;
-  text-align: left;
-  font-family: 'Open Sans', sans-serif;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Outer-profile {
+  margin-top: 20vh;
+  width: 100%;
+  margin-left:0%;
+  position:absolute;
 }
 
 .MatterWorld {
@@ -51,21 +21,69 @@
   position: absolute;
 }
 
-#overlay {
-  position: absolute;
+.Placeholder {
+  opacity: 0;
 }
 
-.fade-in {
-  position:absolute;
-  transition: opacity 1s ease;
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
+.Profile-text {
+  font-size: 4vw;
+  text-align: right;
+  font-family: 'Open Sans', sans-serif;
+}
 
+.Profile-text-div {
+  vertical-align: middle;
+  display: inline-block;
+  white-space: pre;
+  position:relative;
+  animation: showup 7s 1;
+  padding-right: 2%;
+  padding-left: 2%;
+  border: 5px solid black;
+}
+
+.Profile-text-two {
+  font-size: 2.4vw;
+  text-align: left;
+  font-family: 'Open Sans', sans-serif;
+  animation: slidein 7s 1;
+}
+
+.Profile-two-div {
+  vertical-align: middle;
+  overflow: hidden;
+  display: inline-block;
+  white-space: pre;
+  width: 37%;
+  position:relative;
+  animation: reveal 7s 1;
+  padding-left: 2%;
+}
+
+@keyframes slidein {
+    0% { margin-left:-10%; }
+    20% { margin-left:-10%; }
+    35% { margin-left:0%; }
+    100% { margin-left:0%; }
+}
+
+@keyframes showup {
+    0% {opacity:0;}
+    20% {opacity:1;}
+    80% {opacity:1;}
+    100% {opacity:1;}
+}
+
+@keyframes reveal {
+    0% {opacity:0;width:0px;}
+    20% {opacity:1;width:0px;}
+    40% {width:37%;}
+    80% {opacity:1;}
+    100% {opacity:1;width:37%;}
 }
 
 .fade-out {
+  white-space: pre-wrap;
   position:absolute;
   opacity: 0;
   transition: opacity 1s ease;

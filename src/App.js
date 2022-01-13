@@ -9,7 +9,6 @@ function App() {
   return (
     <div className="App">
       <MatterWorld
-        id="overlay"
         className='MatterWorld'
         width={width}
         height={height}

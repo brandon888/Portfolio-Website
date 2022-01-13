@@ -8,27 +8,29 @@ import Matter, {
   Engine,
   Bounds
 } from 'matter-js'
-import React, {useEffect, useState} from 'react';
+import React, { useEffect } from 'react';
 import SecondFloor from './Scenes/SecondFloor';
 import FirstFloor from './Scenes/FirstFloor';
-import ProjectScene from './Scenes/ProjectScene'
-import Fade from './Fade'
+import ThirdFloor from './Scenes/ThirdFloor';
+import ProfileText from './ProfileText'
 import './App.css';
 
 const MatterWorld = (props) => {
   const matter = React.createRef();
   let oLetter;
-  let setTextFade;
-  let projectsBlock;
+  let profileEnter;
   let leftGround;
   let rightGround;
+  let leftGround2;
+  let rightGround2;
   let handleRemoveConstraint;
+  let handleScene;
   let oDetached = false;
-  let handleDrop;
   let drop = false;
+  let drop2 = false;
 
-  const makeTextFade = (setFade) => {
-    setTextFade = setFade;
+  const makeProfileEnter = (setEnter) => {
+    profileEnter = setEnter;
   };
 
   const screen = {
@@ -40,10 +42,7 @@ const MatterWorld = (props) => {
   console.log(screen.h);
 
   useEffect(() => {
-    var mainDone = false;
     var level = 1;
-    var timer = 0;
-    var projectsActive = false;
 
     matter.current.focus();
 
@@ -72,20 +71,7 @@ const MatterWorld = (props) => {
 
     Body.scale(oLetter, screen.w / 1920, screen.w / 1920);
 
-    projectsBlock = Bodies.rectangle(screen.w / 3, 2 * screen.h - 50, 300, 100, {
-      render: {
-        opacity: 0.6,
-        fillStyle: '#ff0000'
-      },
-      isStatic: true,
-      friction: 1,
-      collisionFilter: {
-        group: -1
-      },
-      density: 0.02
-    });
-
-    var leftBound = Bodies.rectangle(-5, screen.h * 1.5, 20, screen.h * 3, {
+    var leftBound = Bodies.rectangle(-5, screen.h * 0.5, 20, screen.h, {
       isStatic: true,
       render: {
         visible: false
@@ -93,7 +79,7 @@ const MatterWorld = (props) => {
       collisionFilter: { group: -3 }
     });
 
-    var rightBound = Bodies.rectangle(screen.w + 5, screen.h * 1.5, 20, screen.h * 3, {
+    var rightBound = Bodies.rectangle(screen.w + 5, screen.h * 0.5, 20, screen.h, {
       isStatic: true,
       render: {
         visible: false
@@ -102,12 +88,15 @@ const MatterWorld = (props) => {
     });
 
     var firstFloor = FirstFloor(screen);
+    var secondFloor = SecondFloor(screen);
     var floorOneComposite = firstFloor.floorOneComposite;
     leftGround = firstFloor.leftGround;
     rightGround = firstFloor.rightGround;
     var bigO = firstFloor.bigO;
-    var floorTwoComposite = SecondFloor(screen);
-    var projectComposite = ProjectScene(screen);
+    var floorTwoComposite = secondFloor.floorTwoComposite;
+    leftGround2 = secondFloor.leftGround;
+    rightGround2 = secondFloor.rightGround;
+    var floorThreeComposite = ThirdFloor(screen);
 
     var oConstraint = Matter.Constraint.create({
       bodyA: bigO,
@@ -116,15 +105,40 @@ const MatterWorld = (props) => {
     });
 
 
-    Composite.add(engine.world, [oConstraint, oLetter, floorOneComposite, floorTwoComposite, leftBound, rightBound]);
+    Composite.add(engine.world, [oConstraint, oLetter, floorOneComposite, leftBound, rightBound]);
 
-    Composite.add(engine.world, [projectsBlock]);
+    // var endOfFirstFloor = Bodies.rectangle(screen.w / 2, screen.h, 100, 30, {
+    //   isStatic: true,
+    // });
+    var endOfSecondFloor = Bodies.rectangle(screen.w / 2, screen.h * 2, 100, 30, {
+      isStatic: true,
+      render: { fillStyle: 'red' },
+    });
+    Composite.add(engine.world, [endOfSecondFloor]);
 
     handleRemoveConstraint = (right) => {
       Composite.remove(engine.world, oConstraint);
       const xForce = right ? 2 * screen.w / 1920 : -2 * screen.w / 1920;
       Body.setVelocity(oLetter, { x: xForce, y: -Math.abs(xForce) * 6 });
-    }
+    };
+
+    handleScene = (floor) => {
+      if (floor === 2) {
+        Body.setStatic(leftGround, false);
+        Body.setStatic(rightGround, false);
+        Composite.add(engine.world, [floorTwoComposite]);
+        if (!drop) {
+          drop = true;
+        }
+      } else if (floor === 3 && oLetter.position.y > screen.h * 1.7) {
+        Body.setStatic(leftGround2, false);
+        Body.setStatic(rightGround2, false);
+        Composite.add(engine.world, [floorThreeComposite]);
+        if (!drop2) {
+          drop2 = true;
+        }
+      }
+    };
 
     Events.on(engine, "beforeUpdate", () => {
       matter.current.focus();
@@ -140,59 +154,44 @@ const MatterWorld = (props) => {
         } else if (level === 1) {
           level = 2;
           //Composite.remove(engine.world, [floorOneComposite]);
-          setTextFade({fade: 'fade-in'})
+          profileEnter({
+            profileTextDiv: "Profile-text-div",
+            profileText: "Profile-text",
+            profileTwoDiv: "Profile-two-div",
+            profileTextTwo: "Profile-text-two",
+          });
         }
+      } else if (drop2 && level === 2) {
+        if (Bounds.contains(render.bounds, {
+          x: 10,
+          y: screen.h * 2
+        })) {
+          Bounds.translate(render.bounds, {
+            x: 0,
+            y: screen.h * 0.02,
+          });
+        } else {
+          level = 3;
+        }
+        //setTextFade({fade: 'fade-out'})
       }
       if (level === 2) {
         if (leftGround.angle > 1.65) {
           Composite.remove(floorOneComposite, [leftGround, rightGround]);
         }
-        if (oLetter.position.y < screen.h * 1.5) {
-          Composite.add(engine.world, [projectComposite]);
-        }
-        if (oLetter.position.y < screen.h * 1.3) {
-          setTextFade({fade: 'fade-out'})
-          if (!Bounds.contains(render.bounds, {
-            x: 10,
-            y: 0
-          })) {
-            Bounds.translate(render.bounds, {
-              x: 0,
-              y: oLetter.velocity.y
-            });
-          } else {
-            level = 3;
-          }
-          if (oLetter.position.y < screen.h * 0.9 + 100 && oLetter.position.x > screen.w * 0.8 - screen.w / 4) {
-            Bounds.translate(render.bounds, {
-              x: 0,
-              y: -5
-            });
-          }
-        } else {
-          setTextFade({fade: 'fade-in'})
-        }
-        if (oLetter.position.x > projectsBlock.position.x - 150 * Math.cos(projectsBlock.angle) && oLetter.position.x < projectsBlock.position.x + 150 * Math.cos(projectsBlock.angle) && oLetter.position.y < projectsBlock.position.y) {
-          Body.set(projectsBlock, {isStatic: false});
-          Body.setVelocity(projectsBlock, {
+        if (oLetter.position.x > screen.w * 0.9 &&
+          !Bounds.contains(render.bounds, {
             x: 0,
-            y: -10
+            y: screen.h
+          })) {
+          Bounds.translate(render.bounds, {
+            x: oLetter.velocity.x,
+            y: 0,
           });
-          timer = 1;
-        } else {
-          if (timer != 0 && projectsBlock.position.y > 2 * screen.h - 50) {
-            timer = 0;
-            Body.setStatic(projectsBlock, true);
-            Body.setPosition(projectsBlock, {
-              x: screen.w / 3,
-              y: 2 * screen.h - 50
-            });
-            Body.setAngle(projectsBlock, 0);
-          }
-
         }
-        if (level === 3) {
-          Composite.remove([floorTwoComposite]);
+      } else if (level === 3) {
+        if (leftGround2.angle > 1.65) {
+          Composite.remove(floorTwoComposite, [leftGround2, rightGround2]);
         }
       }
 
@@ -230,20 +229,27 @@ const MatterWorld = (props) => {
         y: oLetter.velocity.y
       })
     } else if (e.key === 'ArrowDown') {
-      if (oDetached) {
-        Body.setStatic(leftGround, false);
-        Body.setStatic(rightGround, false);
-        if (!drop) {
-          drop = true;
+      if (!oDetached) {
+        if (oLetter.position.y < screen.h * 0.4) {
+          return;
         }
+        oDetached = true;
+        handleRemoveConstraint(false);
+      }
+      if (oDetached) {
+        if (drop === true) {
+          handleScene(3);
+        } else {
+          handleScene(2);
+        }
+
       }
     }
   }
 
   return (
     <div ref={matter} onKeyDown={handleDown} tabIndex={0}>
-      <Fade onChange={makeTextFade} screen={screen} text={"Hi, I'm Brandon"}/>
-
+      <ProfileText onChange={makeProfileEnter}/>
     </div>
   )
 }
