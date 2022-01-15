@@ -3,12 +3,12 @@ import { Composite, Bodies, Constraint } from 'matter-js';
 const SecondFloor = (screen) => {
   var floorTwoComposite = Composite.create();
 
-  var projectGround = Bodies.rectangle(screen.w, 2 * screen.h, screen.w * 1.5, screen.h * 0.05, {
+  var projectGround = Bodies.rectangle(screen.w * 1.5, 2 * screen.h, screen.w, screen.h * 0.05, {
     isStatic: true,
     collisionFilter: { group: -3 }
   });
 
-  var workGround = Bodies.rectangle(screen.w, 2 * screen.h, screen.w * -0.5, screen.h * 0.05, {
+  var workGround = Bodies.rectangle(screen.w * -0.5, 2 * screen.h, screen.w, screen.h * 0.05, {
     isStatic: true,
     collisionFilter: { group: -3 }
   });
@@ -49,7 +49,13 @@ const SecondFloor = (screen) => {
     render: { visible: false }
   });
 
-  Composite.add(floorTwoComposite, [leftGround, rightGround, leftConstraint, rightConstraint, projectGround, workGround]);
+  var rightBound = Bodies.rectangle(screen.w * 2, screen.h * 1.5, 50, screen.h, {
+    isStatic: true,
+    render: { visible: false },
+  })
+
+
+  Composite.add(floorTwoComposite, [rightBound, leftGround, rightGround, leftConstraint, rightConstraint, projectGround, workGround]);
 
   return { floorTwoComposite, leftGround, rightGround };
 }

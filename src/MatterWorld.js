@@ -12,13 +12,15 @@ import React, { useEffect } from 'react';
 import SecondFloor from './Scenes/SecondFloor';
 import FirstFloor from './Scenes/FirstFloor';
 import ThirdFloor from './Scenes/ThirdFloor';
-import ProfileText from './ProfileText'
+import ProfileText from './ProfileText';
+import ProjectText from './ProjectText';
 import './App.css';
 
 const MatterWorld = (props) => {
   const matter = React.createRef();
   let oLetter;
   let profileEnter;
+  let moveText;
   let leftGround;
   let rightGround;
   let leftGround2;
@@ -28,9 +30,18 @@ const MatterWorld = (props) => {
   let oDetached = false;
   let drop = false;
   let drop2 = false;
+  let projectMove;
 
   const makeProfileEnter = (setEnter) => {
     profileEnter = setEnter;
+  };
+
+  const moveProfileText = (setTrans) => {
+    moveText = setTrans;
+  };
+
+  const handleProjectMove = (setTrans) => {
+      projectMove = setTrans;
   };
 
   const screen = {
@@ -140,6 +151,8 @@ const MatterWorld = (props) => {
       }
     };
 
+    var oStartPosition = -100;
+
     Events.on(engine, "beforeUpdate", () => {
       matter.current.focus();
       if (level === 1 && drop) {
@@ -175,19 +188,43 @@ const MatterWorld = (props) => {
         }
         //setTextFade({fade: 'fade-out'})
       }
+
+      var renderTranslation = oLetter.velocity.x;
+
       if (level === 2) {
         if (leftGround.angle > 1.65) {
           Composite.remove(floorOneComposite, [leftGround, rightGround]);
         }
-        if (oLetter.position.x > screen.w * 0.9 &&
-          !Bounds.contains(render.bounds, {
+        if (oLetter.position.x > screen.w * 0.9) {
+          if (Bounds.contains(render.bounds, {
             x: 0,
-            y: screen.h
+            y: screen.h * 1.5
           })) {
+            if (oLetter.velocity.x < 0) {
+              renderTranslation = 0
+            }
+          }
+
+          if (Bounds.contains(render.bounds, {
+            x: screen.w * 2,
+            y: screen.h * 1.5
+          })) {
+            if (oLetter.velocity.x > 0) {
+              renderTranslation = 0
+            }
+          }
+
+          if (oStartPosition === -100) {
+            oStartPosition = oLetter.position.x;
+          }
+
           Bounds.translate(render.bounds, {
-            x: oLetter.velocity.x,
+            x: renderTranslation,
             y: 0,
           });
+
+          moveText({x: -oLetter.position.x + oStartPosition});
+          projectMove({x: -oLetter.position.x + oStartPosition});
         }
       } else if (level === 3) {
         if (leftGround2.angle > 1.65) {
@@ -249,7 +286,8 @@ const MatterWorld = (props) => {
 
   return (
     <div ref={matter} onKeyDown={handleDown} tabIndex={0}>
-      <ProfileText onChange={makeProfileEnter}/>
+      <ProfileText onChange={makeProfileEnter} onPositionChange={moveProfileText} />
+      <ProjectText onPositionChange={handleProjectMove} />
     </div>
   )
 }

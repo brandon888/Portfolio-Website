@@ -1,20 +1,28 @@
 import {useState, useEffect} from 'react';
 import pp from './Assets/linkedin_profile.png';
 
-const ProfileText = ({onChange}) => {
+const ProfileText = ({onChange, onPositionChange}) => {
   const [enter, setEnter] = useState({
     profileTextDiv: "Placeholder",
     profileText: "Placeholder",
     profileTwoDiv: "Placeholder",
     profileTextTwo: "Placeholder",
   });
+
+  const [trans, setTrans] = useState({x: 0});
+
   useEffect(() => {
-    console.log(enter);
     onChange(setEnter);
+    onPositionChange(setTrans);
   }, [])
 
   return (
-    <div className='Outer-profile'>
+    <div
+      className='Outer-profile'
+      style={{
+        transform: `translate(${trans.x}px, 0px)`,
+      }}
+      >
       <div className={enter.profileTextDiv}>
         <h1 className={enter.profileText}>{`BRANDON\nYANG`}</h1>
       </div>
