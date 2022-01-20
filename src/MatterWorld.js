@@ -12,8 +12,9 @@ import React, { useEffect } from 'react';
 import SecondFloor from './Scenes/SecondFloor';
 import FirstFloor from './Scenes/FirstFloor';
 import ThirdFloor from './Scenes/ThirdFloor';
-import ProfileText from './ProfileText';
-import ProjectText from './ProjectText';
+import ProfileText from './Components/ProfileText';
+import ProjectText from './Components/ProjectText';
+import FlashingKeys from './Components/FlashingKeys';
 import './App.css';
 
 const MatterWorld = (props) => {
@@ -21,6 +22,7 @@ const MatterWorld = (props) => {
   let oLetter;
   let profileEnter;
   let moveText;
+  let removeArrows;
   let leftGround;
   let rightGround;
   let leftGround2;
@@ -42,6 +44,10 @@ const MatterWorld = (props) => {
 
   const handleProjectMove = (setTrans) => {
     projectMove = setTrans;
+  };
+
+  const removeArrowKeys = (setStyle) => {
+    removeArrows = setStyle;
   };
 
   const screen = {
@@ -138,6 +144,7 @@ const MatterWorld = (props) => {
         Body.setStatic(leftGround, false);
         Body.setStatic(rightGround, false);
         Composite.add(engine.world, [floorTwoComposite]);
+        removeArrows({ style: 'Arrow-blank' });
         if (!drop) {
           drop = true;
         }
@@ -331,6 +338,7 @@ const MatterWorld = (props) => {
 
   return (
     <div ref={matter} onKeyDown={handleDown} tabIndex={0}>
+      <FlashingKeys onChange={removeArrowKeys} />
       <ProfileText onChange={makeProfileEnter} onPositionChange={moveProfileText} />
       <ProjectText onPositionChange={handleProjectMove} />
     </div>

@@ -4,7 +4,7 @@ import {
   Bodies,
   Constraint
 } from 'matter-js'
-import Letters from '../Letters';
+import Letters from '../Components/Letters';
 
 const SecondFloor = (screen) => {
   var floorOneComposite = Composite.create();
