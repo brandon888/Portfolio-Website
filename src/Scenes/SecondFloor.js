@@ -13,6 +13,11 @@ const SecondFloor = (screen) => {
     collisionFilter: { group: -3 }
   });
 
+  var workGround = Bodies.rectangle(screen.w * -0.5, 2 * screen.h, screen.w, screen.h * 0.05, {
+    isStatic: true,
+    collisionFilter: { group: -3 }
+  });
+
   var leftGround = Bodies.rectangle(0.25 * screen.w, 2 * screen.h, screen.w * 0.5, screen.h * 0.05, {
     isStatic: true,
     collisionFilter: { group: -3 }
@@ -54,8 +59,13 @@ const SecondFloor = (screen) => {
     render: { visible: false },
   })
 
+  var leftBound = Bodies.rectangle(-screen.w - 25, screen.h * 1.5, 50, screen.h, {
+    isStatic: true,
+    render: { visible: false },
+  })
 
-  Composite.add(floorTwoComposite, [rightBound, leftGround, rightGround, leftConstraint, rightConstraint, projectGround, workGround]);
+
+  Composite.add(floorTwoComposite, [rightBound, leftBound, leftGround, rightGround, workGround, leftConstraint, rightConstraint, projectGround, workGround]);
 
   return { floorTwoComposite, leftGround, rightGround };
 }

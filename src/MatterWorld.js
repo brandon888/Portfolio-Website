@@ -41,7 +41,7 @@ const MatterWorld = (props) => {
   };
 
   const handleProjectMove = (setTrans) => {
-      projectMove = setTrans;
+    projectMove = setTrans;
   };
 
   const screen = {
@@ -121,11 +121,11 @@ const MatterWorld = (props) => {
     // var endOfFirstFloor = Bodies.rectangle(screen.w / 2, screen.h, 100, 30, {
     //   isStatic: true,
     // });
-    var endOfSecondFloor = Bodies.rectangle(screen.w / 2, screen.h * 2, 100, 30, {
-      isStatic: true,
-      render: { fillStyle: 'red' },
-    });
-    Composite.add(engine.world, [endOfSecondFloor]);
+    // var endOfSecondFloor = Bodies.rectangle(screen.w / 2, screen.h * 2, 100, 30, {
+    //   isStatic: true,
+    //   render: { fillStyle: 'red' },
+    // });
+    // Composite.add(engine.world, [endOfSecondFloor]);
 
     handleRemoveConstraint = (right) => {
       Composite.remove(engine.world, oConstraint);
@@ -151,9 +151,13 @@ const MatterWorld = (props) => {
       }
     };
 
-    var oStartPosition = -100;
+    var oStartPosition = { x: -100, y: -100 };
 
     Events.on(engine, "beforeUpdate", () => {
+      if (oStartPosition.y !== -100) {
+        moveText({ x: 0, y: -oLetter.position.y + oStartPosition.y });
+      }
+
       matter.current.focus();
       if (level === 1 && drop) {
         if (Bounds.contains(render.bounds, {
@@ -172,9 +176,15 @@ const MatterWorld = (props) => {
             profileText: "Profile-text",
             profileTwoDiv: "Profile-two-div",
             profileTextTwo: "Profile-text-two",
+            projectArrow: "Right-arrow",
+            workArrow: "Left-arrow",
+            downArrow: "Down-arrow",
           });
         }
       } else if (drop2 && level === 2) {
+        if (oStartPosition.y === -100) {
+          oStartPosition.y = oLetter.position.y;
+        }
         if (Bounds.contains(render.bounds, {
           x: 10,
           y: screen.h * 2
@@ -195,6 +205,7 @@ const MatterWorld = (props) => {
         if (leftGround.angle > 1.65) {
           Composite.remove(floorOneComposite, [leftGround, rightGround]);
         }
+        // Right Movement
         if (oLetter.position.x > screen.w * 0.9) {
           if (Bounds.contains(render.bounds, {
             x: 0,
@@ -214,8 +225,8 @@ const MatterWorld = (props) => {
             }
           }
 
-          if (oStartPosition === -100) {
-            oStartPosition = oLetter.position.x;
+          if (oStartPosition.x === -100) {
+            oStartPosition.x = oLetter.position.x;
           }
 
           Bounds.translate(render.bounds, {
@@ -223,8 +234,42 @@ const MatterWorld = (props) => {
             y: 0,
           });
 
-          moveText({x: -oLetter.position.x + oStartPosition});
-          projectMove({x: -oLetter.position.x + oStartPosition});
+          moveText({ x: -oLetter.position.x + oStartPosition.x, y: 0 });
+          projectMove({x: -oLetter.position.x + oStartPosition.x});
+        }
+        // Left Movement
+        else if (oLetter.position.x < screen.w * 0.1) {
+          if (Bounds.contains(render.bounds, {
+            x: -screen.w,
+            y: screen.h * 1.5
+          })) {
+            if (oLetter.velocity.x < 0) {
+              renderTranslation = 0
+            }
+          }
+
+          if (Bounds.contains(render.bounds, {
+            x: screen.w * 1.05,
+            y: screen.h * 1.5
+          })) {
+            if (oLetter.velocity.x > 0) {
+              renderTranslation = 0
+            }
+          }
+
+          if (oStartPosition.x === -100) {
+            oStartPosition.x = oLetter.position.x;
+          }
+
+          Bounds.translate(render.bounds, {
+            x: renderTranslation,
+            y: 0,
+          });
+
+          moveText({ x: -oLetter.position.x + oStartPosition.x, y: 0 });
+          projectMove({x: -oLetter.position.x + oStartPosition.x});
+        } else {
+          oStartPosition = { x: -100, y: oStartPosition.y };
         }
       } else if (level === 3) {
         if (leftGround2.angle > 1.65) {

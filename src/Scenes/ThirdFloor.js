@@ -8,7 +8,19 @@ const ThirdFloor = (screen) => {
     collisionFilter: { group: -3 }
   });
 
-  Composite.add(floorThreeComposite, [ground]);
+  var leftBound = Bodies.rectangle(-25, screen.h * 2.5, 50, screen.h, {
+    isStatic: true,
+    render: { visible: false },
+    collisionFilter: { group: -3 },
+  })
+
+  var rightBound = Bodies.rectangle(screen.w + 25, screen.h * 2.5, 50, screen.h, {
+    isStatic: true,
+    render: { visible: false },
+    collisionFilter: { group: -3 },
+  })
+
+  Composite.add(floorThreeComposite, [ground, rightBound, leftBound]);
 
   return floorThreeComposite;
 }

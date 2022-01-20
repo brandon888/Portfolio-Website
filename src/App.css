@@ -20,46 +20,86 @@ h1 {
 }
 
 .Outer-projects {
-  position:absolute;
-  margin-top: 20vh;
-  margin-left:100vw;
-  width: 100%;
+  overflow: visible;
+  position: absolute;
+  margin-top: 10vh;
+  margin-left:110vw;
+  width: 50%;
+  height: 100vh;
 }
 
 .Project-header {
   position:relative;
-  margin-top: -10%;
   display: inline-block;
-  border-left: 5px solid black;
-  border-right: 5px solid black;
   padding-left: 35px;
   padding-right: 35px;
   font-size: 4vw;
+  left: 15vw;
+}
+
+.Indiv-project {
+  border-left: 1px solid black;
 }
 
 .Project-buttons {
+  padding-top: 50px;
   position: relative;
   display: flex;
   margin-top: 3vh;
-  margin-left: 38vw;
+  left: 7vw;
+}
+
+.Arrow-blank {
+  display: none;
+}
+
+.Right-arrow {
+  position: relative;
+  left: 42vw;
+  top: 24vh;
+}
+
+.Right-arrow img {
+  width: 50px;
+}
+
+.Left-arrow {
+  position: relative;
+  right: 40vw;
+  top: 9vh;
+}
+
+.Left-arrow img {
+  width: 50px;
+}
+
+.Down-arrow {
+  position: relative;
+  bottom: 5vh;
+}
+
+.Down-arrow img {
+  width: 50px;
 }
 
 .Website-description {
   position:relative;
   text-align: left;
   display: inline-block;
-  padding-left: 40px;
-  border-bottom: 3px solid black;
+  padding-left: 100px;
+  padding-right: 100px;
   white-space: pre;
   font-size: 0.5vw;
+  top: 40px;
 }
 
 .button {
   position: relative;
   border-radius: 0px;
-  padding: 4vh 21px;
+  padding: 2vh 21px;
+  height: 40px;
+  vertical-align: center;
   font-size: 1.5vw;
-  line-height: 25px;
   text-transform: uppercase;
   font-family: 'Open Sans', sans-serif;
   letter-spacing: 2px;
