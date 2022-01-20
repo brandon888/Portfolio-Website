@@ -7,7 +7,7 @@ A visual introduction to myself and a showcase of previous work created using Re
 ## Features
 
 ### Matter.js
-Used this JavaScript physics engine to render objects (Letters, Floors, Constraints, etc...)
+Used this JavaScript physics engine to render objects (Letters, Floors, Constraints, etc...) <br>
 Used Matter engine event handlers to handle user interaction (Keyboard input w/ arrow keys)
 
 ### React
