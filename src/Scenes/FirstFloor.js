@@ -28,11 +28,13 @@ const SecondFloor = (screen) => {
 
   var leftGround = Bodies.rectangle(0.25 * screen.w, 0.55 * screen.h, screen.w * 0.5, screen.h * 0.05, {
     isStatic: true,
+    render: {visible: false},
     collisionFilter: { group: -3 }
   });
 
   var rightGround = Bodies.rectangle(0.75 * screen.w, 0.55 * screen.h, screen.w * 0.5, screen.h * 0.05, {
     isStatic: true,
+    render: {visible: false},
     collisionFilter: { group: -3 },
   });
 

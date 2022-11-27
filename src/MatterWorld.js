@@ -254,7 +254,7 @@ const MatterWorld = (props) => {
               renderTranslation = 0
             }
           }
-
+        
           if (Bounds.contains(render.bounds, {
             x: screen.w * 1.05,
             y: screen.h * 1.5

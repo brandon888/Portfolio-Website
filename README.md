@@ -15,7 +15,16 @@ Used React hooks (useState, useEffect, useRef) for several purposes, including i
 
 ## To-Do
 - [x] Adding page indicators
+- [ ] Perfect responsiveness
 - [ ] Allowing upward movement
 - [ ] Finish 'Work Experience' Page
 - [ ] Finish 'About Me' Page
 - [ ] Add contact buttons (email, Github, etc...)
+
+## Idea
+Main page:
+  Floor is rotatable
+   - Moving the cursor rotates the ground
+   - Leave main page after 7 seconds if not click
+
+"Project" and "Work experience" buttons tilt the ground to either side and slides into the page (translate digonally)
