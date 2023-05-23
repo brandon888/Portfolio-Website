@@ -3,7 +3,7 @@ import RightArrow from '../Assets/right-arrow.png';
 import LeftArrow from '../Assets/left-arrow.png';
 import DownArrow from '../Assets/down-arrow.png';
 
-const ProfileText = ({onChange, onPositionChange}) => {
+const ProfileText = ({onChange, onPositionChange, projectOnClick}) => {
   const [enter, setEnter] = useState({
     profileTextDiv: "Placeholder",
     profileText: "Placeholder",
@@ -22,31 +22,33 @@ const ProfileText = ({onChange, onPositionChange}) => {
   }, [])
 
   return (
-    <div
-      className='Outer-profile'
-      style={{
-        transform: `translate(${trans.x}px, ${trans.y}px)`,
-      }}
+    <>
+      <div
+        className='Outer-profile'
+        style={{
+          transform: `translate(${trans.x}px, ${trans.y}px)`,
+        }}
       >
-      <div className={enter.profileTextDiv}>
-        <h1 className={enter.profileText}>{`BRANDON\nYANG`}</h1>
+        <div id="name-and-desc">
+          <div className={enter.profileTextDiv}>
+            <h1 className={enter.profileText}>{`BRANDON\nYANG`}</h1>
+          </div>
+          <div className={enter.profileTwoDiv}>
+            <h1 className={enter.profileTextTwo}>{"Software Developer &\nFull-time student @\nGeorgia Institute of Technology"}</h1>
+          </div>
+        </div>
+        <div id="arrows">
+          <div className={enter.projectArrow} onClick={projectOnClick}>
+            <img src={RightArrow} />
+            <h1>Projects</h1>
+          </div>
+          <div className={enter.workArrow}>
+            <img src={LeftArrow} />
+            <h1>Work Experience</h1>
+          </div>
+        </div>
       </div>
-      <div className={enter.profileTwoDiv}>
-        <h1 className={enter.profileTextTwo}>{"Software Developer &\nFull-time student @\nGeorgia Institute of Technology"}</h1>
-      </div>
-      <div className={enter.projectArrow}>
-        <h1>Projects</h1>
-        <img src={RightArrow} />
-      </div>
-      <div className={enter.workArrow}>
-        <h1>Work Experience</h1>
-        <img src={LeftArrow} />
-      </div>
-      <div className={enter.downArrow}>
-        <h1>About Me</h1>
-        <img src={DownArrow} />
-      </div>
-    </div>
+    </>
   )
 }
 

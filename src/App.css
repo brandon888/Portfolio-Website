@@ -2,7 +2,6 @@
 
 .App {
   position: relative;
-  text-align: center;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
@@ -25,22 +24,45 @@
   width: 100px;
 }
 
+#container {
+  position: relative;
+}
+
+#container canvas, #overlay {
+  position:absolute;
+  width:100vw;
+  height:100vh;
+}
+
+#overlay {
+  overflow: visible;
+}
+
+canvas {
+  border: 1px solid black;
+  z-index: 2;
+}
+
 h1 {
   font-family: 'Open Sans', sans-serif;
+}
+
+#name-and-desc {
+  text-align: center;
+  padding-bottom: 10vh;
 }
 
 .Outer-profile {
   margin-top: 20vh;
   width: 100%;
   margin-left:0%;
-  position:absolute;
+  position:relative;
 }
 
 .Outer-projects {
   overflow: visible;
-  position: absolute;
   margin-top: 10vh;
-  margin-left:110vw;
+  margin-left:50vw;
   width: 50%;
   height: 100vh;
 }
@@ -70,24 +92,33 @@ h1 {
   display: none;
 }
 
+#arrows {
+  height:50vh;
+}
+
 .Right-arrow {
   position: relative;
-  left: 42vw;
-  top: 24vh;
+  width: 150px;
+  height: 100px;
+  float: right;
+  font-size: 1.3vh;
 }
 
 .Right-arrow img {
-  width: 50px;
+  width: 5vh;
 }
 
 .Left-arrow {
   position: relative;
-  right: 40vw;
-  top: 9vh;
+  width: 200px;
+  height: 100px;
+
+  padding-left: 5vw;
+  font-size: 1.3vh;
 }
 
 .Left-arrow img {
-  width: 50px;
+  width: 5vh;
 }
 
 .Down-arrow {
@@ -158,7 +189,8 @@ h1 {
   animation: showup 7s 1;
   padding-right: 2%;
   padding-left: 2%;
-  border: 5px solid black;
+  border-right: 5px solid black;
+  border-bottom: 5px solid black;
 }
 
 .Profile-text-two {

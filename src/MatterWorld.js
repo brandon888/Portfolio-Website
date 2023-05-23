@@ -42,6 +42,7 @@ const MatterWorld = (props) => {
   var drop2 = false;
   var projectMove;
   var cursor;
+  var firstRender = true;
 
   const makeProfileEnter = (setEnter) => {
     profileEnter = setEnter;
@@ -64,82 +65,99 @@ const MatterWorld = (props) => {
     h: props.height
   }
 
+  // const [canvasSize, setCanvasSize] = React.useState({
+  //   width: screen.w,
+  //   height: screen.h
+  // })
+
   useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove);
+    if (firstRender) {
+      firstRender = false;
 
-    matter.current.focus();
-    
-    engine.world.gravity.y = screen.h / 1600;
+      // function handleResize() {
+      //   setCanvasSize({
+      //     height: window.innerHeight,
+      //     width: window.innerWidth
+      //   })
+      // }
+      // window.addEventListener('resize', handleResize);
+      window.addEventListener('mousemove', handleMouseMove);
 
-    render = Render.create({
-      element: matter.current,
-      engine: engine,
-      options: {
-        width: screen.w,
-        height: screen.h,
-        wireframes: false,
-        background: '#fffff',
-        hasBounds: true
-      }
-    });
+      matter.current.focus();
+      
+      engine.world.gravity.y = screen.h / 1600;
 
-    oLetter = Bodies.circle(screen.w * 0.7, -screen.h / 10, 50, {
-      render: {
-        opacity: 0.5
-      },
-      density: 0.01,
-      collisionFilter: { group: -2 },
-    });
+      render = Render.create({
+        element: matter.current,
+        engine: engine,
+        options: {
+          width: screen.w,
+          height: screen.h,
+          wireframes: false,
+          background: '#fffff',
+          hasBounds: true
+        }
+      });
 
-    cursor = Bodies.circle(10, 10, 50, {
-      render: {
-        visible: false
-      },
-      isStatic: true,
-      mass: 1000,
-      collisionFilter: { group: -3 }
-    });
+      oLetter = Bodies.circle(screen.w * 0.7, -screen.h / 10, 50, {
+        render: {
+          opacity: 0.5
+        },
+        density: 0.01,
+        collisionFilter: { group: -2 },
+      });
 
-    Body.scale(oLetter, screen.w / 1920, screen.w / 1920);
+      cursor = Bodies.circle(10, 10, 50, {
+        render: {
+          visible: true
+        },
+        isStatic: true,
+        mass: 1000,
+        collisionFilter: { group: -3 }
+      });
 
-    var leftBound = Bodies.rectangle(-5, screen.h * 0.5, 20, screen.h, {
-      isStatic: true,
-      render: {
-        visible: false
-      },
-      collisionFilter: { group: -3 }
-    });
+      Body.scale(oLetter, screen.w / 1920, screen.w / 1920);
 
-    var rightBound = Bodies.rectangle(screen.w + 5, screen.h * 0.5, 20, screen.h, {
-      isStatic: true,
-      render: {
-        visible: false
-      },
-      collisionFilter: { group: -3 }
-    });
+      var leftBound = Bodies.rectangle(-5, screen.h * 0.5, 20, screen.h, {
+        isStatic: true,
+        render: {
+          visible: false
+        },
+        collisionFilter: { group: -3 }
+      });
 
-    var firstFloor = FirstFloor(screen);
-    var secondFloor = SecondFloor(screen);
-    floorOneComposite = firstFloor.floorOneComposite;
-    leftGround = firstFloor.leftGround;
-    rightGround = firstFloor.rightGround;
-    var bigO = firstFloor.bigO;
-    floorTwoComposite = secondFloor.floorTwoComposite;
-    leftGround2 = secondFloor.leftGround;
-    rightGround2 = secondFloor.rightGround;
-    floorThreeComposite = ThirdFloor(screen);
+      var rightBound = Bodies.rectangle(screen.w + 5, screen.h * 0.5, 20, screen.h, {
+        isStatic: true,
+        render: {
+          visible: false
+        },
+        collisionFilter: { group: -3 }
+      });
 
-    oConstraint = Matter.Constraint.create({
-      bodyA: bigO,
-      bodyB: oLetter,
-      render: { visible: false }
-    });
+      var firstFloor = FirstFloor(screen);
+      var secondFloor = SecondFloor(screen);
+      floorOneComposite = firstFloor.floorOneComposite;
+      leftGround = firstFloor.leftGround;
+      rightGround = firstFloor.rightGround;
+      var bigO = firstFloor.bigO;
+      floorTwoComposite = secondFloor.floorTwoComposite;
+      leftGround2 = secondFloor.leftGround;
+      rightGround2 = secondFloor.rightGround;
+      floorThreeComposite = ThirdFloor(screen);
 
-    Composite.add(engine.world, [cursor, oConstraint, oLetter, floorOneComposite, leftBound, rightBound]);
+      oConstraint = Matter.Constraint.create({
+        bodyA: bigO,
+        bodyB: oLetter,
+        render: { visible: false }
+      });
 
-    var runner = Runner.create();
-    Render.run(render);
-    Runner.run(runner, engine);
+      Composite.add(engine.world, [cursor, oConstraint, oLetter, floorOneComposite, leftBound, rightBound]);
+
+      var runner = Runner.create();
+      Render.run(render);
+      Runner.run(runner, engine);
+    }
+
 
   }, []);
   
@@ -217,6 +235,8 @@ const MatterWorld = (props) => {
     var renderTranslation = oLetter.velocity.x;
 
     if (level === 2) {
+      document.getElementById("overlay").style.zIndex = 3;
+
       if (leftGround.angle > 1.65) {
         Composite.remove(floorOneComposite, [leftGround, rightGround]);
       }
@@ -295,7 +315,6 @@ const MatterWorld = (props) => {
   });
 
   const handleMouseMove = (e) => {
-    console.log(e.clientX, e.clientY);
     Body.setPosition(cursor, {x: e.clientX, y: e.clientY})
   };
 
@@ -324,7 +343,7 @@ const MatterWorld = (props) => {
         x: -screen.w / 1920 * 10,
         y: oLetter.velocity.y
       })
-    } else if (e.key === 'ArrowDown') {
+    } else if (e.type === 'wheel') {
       if (!oDetached) {
         if (oLetter.position.y < screen.h * 0.4) {
           return;
@@ -343,17 +362,18 @@ const MatterWorld = (props) => {
     }
   }
 
-  const projectClicked = () => {
-    console.log("hi")
-    Body.rotate(rightGround2, 10);
+  const moveToProject = () => {
+    Body.setVelocity(oLetter, { x: 100 * screen.w / 1920, y: 6 });
   }
 
   return (
-    <div ref={matter} onKeyDown={handleDown} tabIndex={0}>
+  <div id="container" ref={matter} onKeyDown={handleDown} onWheel={handleDown} tabIndex={0}>
+    <div id="overlay">
       <FlashingKeys onChange={removeArrowKeys} />
-      <ProfileText onChange={makeProfileEnter} onPositionChange={moveProfileText} />
+      <ProfileText projectOnClick={moveToProject} onChange={makeProfileEnter} onPositionChange={moveProfileText} />
       <ProjectText onPositionChange={handleProjectMove} />
     </div>
+  </div>
   )
 }
 
