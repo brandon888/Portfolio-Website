@@ -36,6 +36,7 @@
 
 #overlay {
   overflow: visible;
+  display:table;
 }
 
 canvas {
@@ -54,38 +55,54 @@ h1 {
 
 .Outer-profile {
   margin-top: 20vh;
-  width: 100%;
+  width: 100vw;
   margin-left:0%;
+  float:left;
   position:relative;
+  display:table-cell;
+}
+
+.Outer-work {
+  overflow: visible;
+  display: flex;
+  width: 50vw;
+  display: table-cell;
+  border: 5px black solid;
 }
 
 .Outer-projects {
   overflow: visible;
-  margin-top: 10vh;
-  margin-left:50vw;
-  width: 50%;
-  height: 100vh;
+  display: flex;
+  width: 50vw;
+  display: table-cell;
+  border: 5px black solid;
 }
 
+
 .Project-header {
-  position:relative;
-  display: inline-block;
-  padding-left: 35px;
-  padding-right: 35px;
+  position:absolute;
   font-size: 4vw;
-  left: 15vw;
+  top: 0;
+  left: 15rem;
 }
 
 .Indiv-project {
-  border-left: 1px solid black;
+  height: 10vh;
+  display: table-cell;
 }
 
 .Project-buttons {
-  padding-top: 50px;
-  position: relative;
-  display: flex;
-  margin-top: 3vh;
-  left: 7vw;
+  height: 50vh;
+  position: absolute;
+  margin-top: 12rem;
+  left: 15rem;
+}
+
+.Project-buttons1 {
+  height: 50vh;
+  position: absolute;
+  margin-top: 27rem;
+  left: 15rem;
 }
 
 .Arrow-blank {
@@ -151,7 +168,10 @@ h1 {
   text-transform: uppercase;
   font-family: 'Open Sans', sans-serif;
   letter-spacing: 2px;
-  border: 3px solid black;
+  border-bottom: 3px solid black;
+  border-top: 3px solid black;
+  text-decoration: none;
+  color: black;
 }
 
 .button:hover {
