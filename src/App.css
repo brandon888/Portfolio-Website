@@ -56,6 +56,7 @@ h1 {
 .Outer-profile {
   margin-top: 20vh;
   width: 100vw;
+  display: flex;
   margin-left:0%;
   float:left;
   position:relative;
@@ -63,10 +64,12 @@ h1 {
 }
 
 .Outer-work {
+  position: absolute;
   overflow: visible;
   display: flex;
   width: 50vw;
   display: table-cell;
+  right: 170vw;
   border: 5px black solid;
 }
 
@@ -91,6 +94,11 @@ h1 {
   display: table-cell;
 }
 
+.Indiv-work {
+  height: 10vh;
+  display: table-cell;
+}
+
 .Project-buttons {
   height: 50vh;
   position: absolute;
@@ -99,6 +107,32 @@ h1 {
 }
 
 .Project-buttons1 {
+  height: 50vh;
+  position: absolute;
+  margin-top: 27rem;
+  left: 15rem;
+}
+
+.Work-header {
+  position:absolute;
+  font-size: 4vw;
+  top: 0;
+  left: 15rem;
+}
+
+.Work-project {
+  height: 10vh;
+  display: table-cell;
+}
+
+.Work-buttons {
+  height: 50vh;
+  position: absolute;
+  margin-top: 12rem;
+  left: 15rem;
+}
+
+.Work-buttons1 {
   height: 50vh;
   position: absolute;
   margin-top: 27rem;

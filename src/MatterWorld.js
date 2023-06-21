@@ -14,6 +14,7 @@ import FirstFloor from './Scenes/FirstFloor';
 import ThirdFloor from './Scenes/ThirdFloor';
 import ProfileText from './Components/ProfileText';
 import ProjectText from './Components/ProjectText';
+import WorkText from './Components/WorkText';
 import FlashingKeys from './Components/FlashingKeys';
 import './App.css';
 
@@ -41,6 +42,7 @@ const MatterWorld = (props) => {
   var drop = false;
   var drop2 = false;
   var projectMove;
+  var workMove;
   var cursor;
   var firstRender = true;
 
@@ -54,6 +56,10 @@ const MatterWorld = (props) => {
 
   const handleProjectMove = (setTrans) => {
     projectMove = setTrans;
+  };
+
+  const handleWorkMove = (setTrans) => {
+    workMove = setTrans;
   };
 
   const removeArrowKeys = (setStyle) => {
@@ -271,6 +277,7 @@ const MatterWorld = (props) => {
 
         moveText({ x: -oLetter.position.x + oStartPosition.x, y: 0 });
         projectMove({x: -oLetter.position.x + oStartPosition.x});
+        workMove({x: -oLetter.position.x + oStartPosition.x});
       }
       // Left Movement
       else if (oLetter.position.x < screen.w * 0.1) {
@@ -303,6 +310,7 @@ const MatterWorld = (props) => {
 
         moveText({ x: -oLetter.position.x + oStartPosition.x, y: 0 });
         projectMove({x: -oLetter.position.x + oStartPosition.x});
+        workMove({x: -oLetter.position.x + oStartPosition.x});
       } else {
         oStartPosition = { x: -100, y: oStartPosition.y };
       }
@@ -370,6 +378,7 @@ const MatterWorld = (props) => {
   <div id="container" ref={matter} onKeyDown={handleDown} onWheel={handleDown} tabIndex={0}>
     <div id="overlay">
       <FlashingKeys onChange={removeArrowKeys} />
+      <WorkText onPositionChange={handleWorkMove} />
       <ProfileText projectOnClick={moveToProject} onChange={makeProfileEnter} onPositionChange={moveProfileText} />
       <ProjectText onPositionChange={handleProjectMove} />
     </div>
